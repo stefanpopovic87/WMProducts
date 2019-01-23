@@ -22,3 +22,58 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.sidenav {
+    top: 50px;
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    background-color: #93c54b;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 15px;
+        color: #6b9430;
+        display: block;
+        transition: 0.3s;
+    }
+
+        .sidenav a:hover {
+            color: #ffffff;
+        }
+
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+
+        .sidenav a {
+            font-size: 18px;
+        }
+}
+.navbar .openBtn {
+    position: fixed;
+    overflow: hidden;
+    font-size: 20px !important;
+    top: 15px;
+    left: 15px;
+    color: #6b9430;
+}
+    .navbar .openBtn:hover {
+        color: #ffffff;
+    }

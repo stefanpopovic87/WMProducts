@@ -1,0 +1,180 @@
+﻿@model IEnumerable<WMProducts.Models.Product>
+
+@{
+    ViewBag.Title = "Products";
+}
+
+<h2>Products</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table id="products" class="table table-hover table-condensed">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Manufacturer
+                </th>
+                <th>
+                    Supplier
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Manufacturer.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Supplier.Name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price) &euro;
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+
+@*<link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
+<style type="text/css">
+    .error {
+        color: red;
+        display: inline-block;
+        margin-bottom: -57px !important;
+        width: 100%;
+    }
+</style>
+
+@section scripts {
+
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('form').validate({
+                rules: {
+                    JSONFile: {
+                        required: true
+                    }
+                },
+                messages: {
+                    JSONFile: "Choose file to upload",
+                }
+            })
+            $('#dataTable').DataTable({
+                "ajax": {
+                    "url": "/Products/GetData",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "Id" },
+                    { "data": "Name" },
+                    { "data": "Description" },
+                    { "data": "Price" }
+                ]
+            });
+        });
+    </script>
+}*@
+@*<script>
+        $(document).ready(function () {
+            $("#products").DataTable(
+                {
+                    "ajax": {
+                        "url": "/Products/GetAll",
+                        "type": "GET",
+                        "dataType": "json"
+                    },
+                    "columns": [
+                        {
+                            "data": "Name"
+                        },
+                        {
+                            "data": "Description"
+                        },
+                        {
+                            "data": "Price"
+                        }
+                    ]
+                });
+        });
+    </script>*@
+
+@*<h2>Products</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<div class="container">
+    @using (Html.BeginForm("Upload", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <div class="col-sm-1 col-md-6 col-xs-12">
+                <h5 class="text-danger">@ViewBag.Error</h5>
+                <h5 class="text-success">@ViewBag.Success</h5>
+                <div class="form-group">
+                    <label>Choose JSON File:</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input id="JSONfile" name="JSONFile" type="file" class="custom-file-input" />
+                            <label class="custom-file-label"></label>
+                        </div>
+                        <div class="input-group-append">
+                            <input type="submit" class="btn btn-outline-primary" value="Upload" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+
+    <table id="dataTable" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+    </table>
+
+
+</div>*@
+
+
