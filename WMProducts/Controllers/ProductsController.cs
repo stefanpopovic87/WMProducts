@@ -9,6 +9,10 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WMProducts.Models;
+using System.Web.Script.Serialization;
+using System.Web.Hosting;
+using System.Text;
+using WMProducts.ViewModel;
 
 namespace WMProducts.Controllers
 {
@@ -19,8 +23,13 @@ namespace WMProducts.Controllers
         // GET: Products
         public ActionResult Index()
         {
-            var products = db.Products.Include(p => p.Category).Include(p => p.Manufacturer).Include(p => p.Supplier);
-            return View(products.ToList());
+            var products = db.Products
+                .Include(p => p.Category)
+                .Include(p => p.Manufacturer)
+                .Include(p => p.Supplier)
+                .OrderBy(p => p.Category.Name)
+                .ToList();
+            return View(products);
         }
 
         public ActionResult GetData()
@@ -73,7 +82,7 @@ namespace WMProducts.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
+            var product = db.Products.Include(p => p.Category).Include(p => p.Manufacturer).Include(p => p.Supplier).SingleOrDefault(p => p.Id == id);
             if (product == null)
             {
                 return HttpNotFound();
@@ -84,10 +93,20 @@ namespace WMProducts.Controllers
         // GET: Products/Create
         public ActionResult Create()
         {
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
-            ViewBag.ManufacturerId = new SelectList(db.Manufacturers, "Id", "Name");
-            ViewBag.SupplierId = new SelectList(db.Suppliers, "Id", "Name");
-            return View();
+            //ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
+            //ViewBag.ManufacturerId = new SelectList(db.Manufacturers, "Id", "Name");
+            //ViewBag.SupplierId = new SelectList(db.Suppliers, "Id", "Name");
+            var suppliers = db.Suppliers.ToList();
+            var manufacturers = db.Manufacturers.ToList();
+            var categories = db.Categories.ToList();
+
+            var viewModel = new ProductViewModel
+            {
+                Suppliers = suppliers,
+                Manufacturers = manufacturers,
+                Categories = categories
+            };
+            return View("Create", viewModel);
         }
 
         // POST: Products/Create
@@ -95,20 +114,59 @@ namespace WMProducts.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,Price,SupplierId,CategoryId,ManufacturerId")] Product product)
+        public ActionResult Create(/*[Bind(Include = "Id,Name,Description,Price,SupplierId,CategoryId,ManufacturerId")]*/ Product product)
         {
-            if (ModelState.IsValid)
+            //ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", product.CategoryId);
+            //ViewBag.ManufacturerId = new SelectList(db.Manufacturers, "Id", "Name", product.ManufacturerId);
+            //ViewBag.SupplierId = new SelectList(db.Suppliers, "Id", "Name", product.SupplierId);
+
+            if (!ModelState.IsValid)
             {
+                var viewModel = new ProductViewModel(product)
+                {
+                    Suppliers = db.Suppliers.ToList(),
+                    Manufacturers = db.Manufacturers.ToList(),
+                    Categories = db.Categories.ToList()
+                };
+                return View("Create", viewModel);
+            }
+            //if (product.Id == 0)
+            //    db.Products.Add(product);
+            else
+            {
+                //var prodictInDb = db.Products.Single(p => p.Id == product.Id);
+
+                //prodictInDb.Name = product.Name;
+                //prodictInDb.Description = product.Description;
+                //prodictInDb.Price = product.Price;
+                //prodictInDb.CategoryId = product.CategoryId;
+                //prodictInDb.SupplierId = product.SupplierId;
+                //prodictInDb.ManufacturerId = product.ManufacturerId;
+
                 db.Products.Add(product);
                 db.SaveChanges();
+                string JSONresult = JsonConvert.SerializeObject(product);
+                string path = HostingEnvironment.MapPath("~/Data/products.json");
+
+                StringBuilder sb = new StringBuilder();
+                JsonWriter jw = new JsonTextWriter(new StringWriter(sb));
+
+                jw.Formatting = Formatting.Indented;
+                jw.WriteStartObject();
+
+                using (var tw = new StreamWriter(path, true))
+                {
+                    tw.WriteLine(JSONresult.ToString());
+                    tw.Close();
+                }
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", product.CategoryId);
-            ViewBag.ManufacturerId = new SelectList(db.Manufacturers, "Id", "Name", product.ManufacturerId);
-            ViewBag.SupplierId = new SelectList(db.Suppliers, "Id", "Name", product.SupplierId);
-            return View(product);
+           
         }
+
+
+
 
         // GET: Products/Edit/5
         public ActionResult Edit(int? id)
@@ -154,7 +212,7 @@ namespace WMProducts.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
+            var product = db.Products.Include(p => p.Category).Include(p => p.Manufacturer).Include(p => p.Supplier).SingleOrDefault(p => p.Id == id);
             if (product == null)
             {
                 return HttpNotFound();
@@ -180,6 +238,12 @@ namespace WMProducts.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private static string FormatJson(string json)
+        {
+            dynamic parsedJson = JsonConvert.DeserializeObject(json);
+            return JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
         }
     }
 }

@@ -23,6 +23,7 @@ textarea {
     max-width: 280px;
 }
 
+/*SIDE NAV*/
 .sidenav {
     top: 50px;
     height: 100%;
@@ -66,6 +67,7 @@ textarea {
             font-size: 18px;
         }
 }
+
 .navbar .openBtn {
     position: fixed;
     overflow: hidden;
@@ -74,6 +76,13 @@ textarea {
     left: 15px;
     color: #6b9430;
 }
+
     .navbar .openBtn:hover {
         color: #ffffff;
     }
+
+/*VALIDATION*/
+.text-danger {
+    font-size: 10px;
+    color: #e04c47;
+}

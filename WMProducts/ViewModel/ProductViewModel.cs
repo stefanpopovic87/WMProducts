@@ -4,12 +4,17 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using System.Web.Script.Serialization;
+using WMProducts.Models;
 
-namespace WMProducts.Models
+namespace WMProducts.ViewModel
 {
-    public class Product
+    public class ProductViewModel
     {
+        
+        public IEnumerable<Supplier> Suppliers { get; set; }
+        public IEnumerable<Manufacturer> Manufacturers { get; set; }
+        public IEnumerable<Category> Categories { get; set; }
+
         public int Id { get; set; }
 
         [Required]
@@ -28,24 +33,31 @@ namespace WMProducts.Models
         [JsonIgnore]
         public int SupplierId { get; set; }
 
-        public Supplier Supplier { get; set; }
-
         [Display(Name = "Category")]
         [JsonIgnore]
         public int CategoryId { get; set; }
-
-        public Category Category { get; set; }
 
         [Display(Name = "Manufacturer")]
         [JsonIgnore]
         public int ManufacturerId { get; set; }
 
-        public Manufacturer Manufacturer { get; set; }
+        public ProductViewModel()
+        {
+            Id = 0;
+        }
 
-        //public virtual Supplier Supplier { get; set; }
-        //public virtual Category Category { get; set; }
-        //public virtual Manufacturer Manufacturer { get; set; }
 
-        //public virtual Store Store { get; set; }
+        public ProductViewModel(Product product)
+        {
+            Id = product.Id;
+            Name = product.Name;
+            Description = product.Description;
+            Price = product.Price;
+            CategoryId = product.CategoryId;
+            SupplierId = product.SupplierId;
+            ManufacturerId = product.ManufacturerId;
+        }
+
+
     }
 }
