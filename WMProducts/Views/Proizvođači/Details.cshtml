@@ -1,0 +1,26 @@
+﻿@model WMProducts.Models.Proizvođač
+
+    @{
+        ViewBag.Title = "Informacije";
+    }
+
+    <h2>Informacije o proizvođaču</h2>
+
+    <div>
+        <h4>Proizvođač</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Naziv)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Naziv)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Izmeni", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Nazad na listu", "Index")
+    </p>

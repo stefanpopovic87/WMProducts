@@ -1,0 +1,67 @@
+﻿@model WMProducts.Models.Proizvod
+
+    @{
+        ViewBag.Title = "Informacije";
+    }
+
+    <h2>Informacije o proizvodu</h2>
+
+    <div>
+        <h4>Proizvod</h4>
+        <hr />
+        <dl class="dl-horizontal">
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Naziv)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Naziv)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Opis)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Opis)
+            </dd>
+            <dt>
+                Kategorija
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Kategorija.Naziv)
+            </dd>
+
+            <dt>
+                Proizvođač
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Proizvođač.Naziv)
+            </dd>
+
+            <dt>
+                Dobavljač
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Dobavljač.Naziv)
+            </dd>
+
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Cena)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Cena) RSD
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Izmeni", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Nazad na listu", "Index")
+    </p>
