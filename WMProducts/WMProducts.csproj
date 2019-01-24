@@ -252,6 +252,14 @@
     <Compile Include="Migrations\201901241100041_UpdateTableName.Designer.cs">
       <DependentUpon>201901241100041_UpdateTableName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901242028221_UpdateSupplierAndManufacturerModel.cs" />
+    <Compile Include="Migrations\201901242028221_UpdateSupplierAndManufacturerModel.Designer.cs">
+      <DependentUpon>201901242028221_UpdateSupplierAndManufacturerModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901242105209_UpdateSupplierAndManufacturerModel1.cs" />
+    <Compile Include="Migrations\201901242105209_UpdateSupplierAndManufacturerModel1.Designer.cs">
+      <DependentUpon>201901242105209_UpdateSupplierAndManufacturerModel1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Kategorija.cs" />
@@ -399,6 +407,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901241100041_UpdateTableName.resx">
       <DependentUpon>201901241100041_UpdateTableName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901242028221_UpdateSupplierAndManufacturerModel.resx">
+      <DependentUpon>201901242028221_UpdateSupplierAndManufacturerModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901242105209_UpdateSupplierAndManufacturerModel1.resx">
+      <DependentUpon>201901242105209_UpdateSupplierAndManufacturerModel1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

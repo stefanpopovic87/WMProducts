@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using WMProducts.Models;
 
@@ -50,6 +52,7 @@ namespace WMProducts.Controllers
             {
                 db.Kategorije.Add(kategorija);
                 db.SaveChanges();
+                SaveToJsonFile();
                 return RedirectToAction("Index");
             }
 
@@ -80,6 +83,7 @@ namespace WMProducts.Controllers
             {
                 db.Entry(kategorija).State = EntityState.Modified;
                 db.SaveChanges();
+                SaveToJsonFile();
                 return RedirectToAction("Index");
             }
             return View(kategorija);
@@ -108,6 +112,7 @@ namespace WMProducts.Controllers
             Kategorija kategorija = db.Kategorije.Find(id);
             db.Kategorije.Remove(kategorija);
             db.SaveChanges();
+            SaveToJsonFile();
             return RedirectToAction("Index");
         }
 
@@ -118,6 +123,20 @@ namespace WMProducts.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public void SaveToJsonFile()
+        {
+            List<Proizvod> proizvodi = db.Proizvodi
+                    .Include(p => p.Kategorija)
+                    .Include(p => p.Dobavljač)
+                    .Include(p => p.Proizvođač)
+                    .ToList();
+
+            string JSONresult = JsonConvert.SerializeObject(proizvodi);
+            string path = HostingEnvironment.MapPath("~/Data/proizvodi.json");
+            System.IO.File.WriteAllText(path, JSONresult);
+
         }
     }
 }

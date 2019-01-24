@@ -189,6 +189,7 @@ namespace WMProducts.Controllers
             {
                 db.Entry(proizvod).State = EntityState.Modified;
                 db.SaveChanges();
+                SaveToJsonFile();
                 return RedirectToAction("Index");
             }
             ViewBag.KategorijaId = new SelectList(db.Kategorije, "Id", "Naziv", proizvod.KategorijaId);
@@ -220,6 +221,7 @@ namespace WMProducts.Controllers
             Proizvod proizvod = db.Proizvodi.Find(id);
             db.Proizvodi.Remove(proizvod);
             db.SaveChanges();
+            SaveToJsonFile();
             return RedirectToAction("Index");
         }
 

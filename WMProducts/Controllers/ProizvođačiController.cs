@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using WMProducts.Models;
 
@@ -44,12 +46,13 @@ namespace WMProducts.Controllers
         // POST: Proizvođači/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Naziv")] Proizvođač proizvođač)
+        public ActionResult Create([Bind(Include = "Id,Naziv,Adresa,Pib")] Proizvođač proizvođač)
         {
             if (ModelState.IsValid)
             {
                 db.Proizvođači.Add(proizvođač);
                 db.SaveChanges();
+                SaveToJsonFile();
                 return RedirectToAction("Index");
             }
 
@@ -74,12 +77,13 @@ namespace WMProducts.Controllers
         // POST: Proizvođači/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Naziv")] Proizvođač proizvođač)
+        public ActionResult Edit([Bind(Include = "Id,Naziv,Adresa,Pib")] Proizvođač proizvođač)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(proizvođač).State = EntityState.Modified;
                 db.SaveChanges();
+                SaveToJsonFile();
                 return RedirectToAction("Index");
             }
             return View(proizvođač);
@@ -108,6 +112,7 @@ namespace WMProducts.Controllers
             Proizvođač proizvođač = db.Proizvođači.Find(id);
             db.Proizvođači.Remove(proizvođač);
             db.SaveChanges();
+            SaveToJsonFile();
             return RedirectToAction("Index");
         }
 
@@ -119,5 +124,20 @@ namespace WMProducts.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public void SaveToJsonFile()
+        {
+            List<Proizvod> proizvodi = db.Proizvodi
+                    .Include(p => p.Kategorija)
+                    .Include(p => p.Dobavljač)
+                    .Include(p => p.Proizvođač)
+                    .ToList();
+
+            string JSONresult = JsonConvert.SerializeObject(proizvodi);
+            string path = HostingEnvironment.MapPath("~/Data/proizvodi.json");
+            System.IO.File.WriteAllText(path, JSONresult);
+
+        }
+
     }
 }

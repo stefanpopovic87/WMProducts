@@ -1,33 +1,49 @@
 ﻿@model WMProducts.Models.Proizvođač
 
-    @{
-        ViewBag.Title = "Obriši";
+@{
+    ViewBag.Title = "Obriši";
+}
+
+<h2>Obriši</h2>
+
+<h3>Da li si siguran da želiš da obrišeš?</h3>
+<div>
+    <h4>Proizvođač</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Naziv)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Naziv)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Adresa)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Adresa)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Pib)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pib)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Obriši" class="btn btn-default" /> |
+            @Html.ActionLink("Nazad na listu", "Index")
+        </div>
     }
-
-    <h2>Obriši</h2>
-
-    <h3>Da li si siguran da želiš da obrišeš?</h3>
-    <div>
-        <h4>Proizvođač</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Naziv)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Naziv)
-            </dd>
-
-        </dl>
-
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-
-            <div class="form-actions no-color">
-                <input type="submit" value="Obriši" class="btn btn-default" /> |
-                @Html.ActionLink("Nazad na listu", "Index")
-            </div>
-        }
-    </div>
+</div>

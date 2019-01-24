@@ -14,6 +14,12 @@
         <th>
             @Html.DisplayNameFor(model => model.Naziv)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Adresa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pib)
+        </th>
         <th></th>
     </tr>
 
@@ -22,6 +28,12 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Naziv)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Adresa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pib)
             </td>
             <td>
                 @Html.ActionLink("Izmeni", "Edit", new { id = item.Id }) |

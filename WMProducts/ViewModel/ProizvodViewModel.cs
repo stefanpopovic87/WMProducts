@@ -27,18 +27,22 @@ namespace WMProducts.ViewModel
 
         [Required(ErrorMessage = "Polje je obavezno")]
         [Range(1, 9999999.99, ErrorMessage = "Cena mora biti u opsegu od 1 do 9999999.99 RSD")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.###}")]
+        [RegularExpression(@"\d+(\.\d{1,2})?", ErrorMessage = "Pogrešan unos")]
+        [DisplayFormat(DataFormatString = "{0:n2}")]
         public decimal Cena { get; set; }
 
         [JsonIgnore]
+        [Required(ErrorMessage = "Polje je obavezno")]
         [Display(Name = "Dobavljač")]
         public int DobavljačId { get; set; }
 
         [JsonIgnore]
+        [Required(ErrorMessage = "Polje je obavezno")]
         [Display(Name = "Kategorija")]
         public int KategorijaId { get; set; }
 
         [JsonIgnore]
+        [Required(ErrorMessage = "Polje je obavezno")]
         [Display(Name = "Proizvođač")]
         public int ProizvođačId { get; set; }
 

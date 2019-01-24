@@ -14,21 +14,33 @@
         <th>
             @Html.DisplayNameFor(model => model.Naziv)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Adresa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pib)
+        </th>
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Naziv)
-            </td>
-            <td>
-                @Html.ActionLink("Izmeni", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Informacije", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Obriši", "Delete", new { id = item.Id })
-            </td>
-        </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Naziv)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Adresa)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pib)
+        </td>
+        <td>
+            @Html.ActionLink("Izmeni", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Informacije", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Obriši", "Delete", new { id = item.Id })
+        </td>
+    </tr>
     }
 
 </table>

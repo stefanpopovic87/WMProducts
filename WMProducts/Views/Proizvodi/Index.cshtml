@@ -16,9 +16,6 @@
                 @Html.DisplayNameFor(model => model.Naziv)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Opis)
-            </th>
-            <th>
                 Kategorija
             </th>
             <th>
@@ -39,10 +36,8 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Naziv)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Opis)
+
+                    @Html.DisplayFor(modelItem => item.Naziv)   
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Kategorija.Naziv)
