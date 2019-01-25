@@ -86,7 +86,6 @@ namespace WMProducts.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Proizvod proizvod)
         {
-
             var karegorija = db.Kategorije.Find(proizvod.KategorijaId).Naziv;
             var proizvođač = db.Proizvođači.Find(proizvod.ProizvođačId).Naziv;
             var dobavljač = db.Dobavljači.Find(proizvod.DobavljačId).Naziv;
@@ -106,7 +105,6 @@ namespace WMProducts.Controllers
                 };
                 return View("Create", viewModel);
             }
-
 
             else if (isExist)
             {
@@ -147,6 +145,7 @@ namespace WMProducts.Controllers
             ViewBag.KategorijaId = new SelectList(db.Kategorije, "Id", "Naziv", proizvod.KategorijaId);
             ViewBag.ProizvođačId = new SelectList(db.Proizvođači, "Id", "Naziv", proizvod.ProizvođačId);
             ViewBag.DobavljačId = new SelectList(db.Dobavljači, "Id", "Naziv", proizvod.DobavljačId);
+
             return View(proizvod);
         }
 
@@ -155,6 +154,13 @@ namespace WMProducts.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Naziv,Opis,Cena,DobavljačId,KategorijaId,ProizvođačId")] Proizvod proizvod)
         {
+            var productInDb = db.Proizvodi
+                .Include(p => p.Kategorija)
+                .Include(p => p.Proizvođač)
+                .Include(p => p.Dobavljač)
+                .SingleOrDefault(p => p.Id == proizvod.Id);
+
+            //Proizvod newProduct = proizvod;
 
             var karegorija = db.Kategorije.Find(proizvod.KategorijaId).Naziv;
             var proizvođač = db.Proizvođači.Find(proizvod.ProizvođačId).Naziv;
@@ -172,6 +178,26 @@ namespace WMProducts.Controllers
                 ViewBag.DobavljačId = new SelectList(db.Dobavljači, "Id", "Naziv", proizvod.DobavljačId);
                 return View(proizvod);
             }
+            else if (productInDb.Naziv == proizvod.Naziv
+                && productInDb.Opis == proizvod.Opis
+                && productInDb.Cena == proizvod.Cena
+                && productInDb.Kategorija.Naziv == karegorija
+                && productInDb.Dobavljač.Naziv == dobavljač
+                && productInDb.Proizvođač.Naziv == proizvođač)
+            {
+                return RedirectToAction("Index");
+            }
+            else if (productInDb.Naziv == proizvod.Naziv
+                 && productInDb.Kategorija.Naziv == karegorija
+                  && productInDb.Dobavljač.Naziv == dobavljač)
+            {
+                productInDb.Opis = proizvod.Opis;
+                productInDb.Cena = proizvod.Cena;
+                productInDb.Proizvođač.Naziv = proizvođač;
+                db.SaveChanges();
+                SaveToJsonFile();
+                return RedirectToAction("Index");
+            }
 
             else if (isExist)
             {
@@ -184,7 +210,12 @@ namespace WMProducts.Controllers
 
             else
             {
-                db.Entry(proizvod).State = EntityState.Modified;
+                productInDb.Naziv = proizvod.Naziv;
+                productInDb.Opis = proizvod.Opis;
+                productInDb.Cena = proizvod.Cena;
+                productInDb.Kategorija.Id = db.Proizvodi.FirstOrDefault(p => p.Id == proizvod.Id).Kategorija.Id;
+                productInDb.Proizvođač.Id = db.Proizvodi.FirstOrDefault(p => p.Id == proizvod.Id).Proizvođač.Id;
+                productInDb.Dobavljač.Id = db.Proizvodi.FirstOrDefault(p => p.Id == proizvod.Id).Dobavljač.Id;
                 db.SaveChanges();
                 SaveToJsonFile();
                 return RedirectToAction("Index");
