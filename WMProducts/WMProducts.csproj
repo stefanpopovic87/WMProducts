@@ -354,6 +354,7 @@
     <Content Include="Views\Proizvodi\Details.cshtml" />
     <Content Include="Views\Proizvodi\Edit.cshtml" />
     <Content Include="Views\Proizvodi\Index.cshtml" />
+    <Content Include="Views\Proizvodi\IndexReadOnly.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

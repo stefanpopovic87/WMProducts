@@ -16,11 +16,13 @@ using WMProducts.ViewModel;
 
 namespace WMProducts.Controllers
 {
+    //[Authorize]
     public class ProizvodiController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Proizvodi
+        [AllowAnonymous]
         public ActionResult Index()
         {
             var proizvodi = db.Proizvodi
@@ -28,9 +30,15 @@ namespace WMProducts.Controllers
                 .Include(p => p.Dobavljač)
                 .Include(p => p.Proizvođač)
                 .ToList();
-            return View(proizvodi);
+            if (User.Identity.IsAuthenticated)
+                return View(proizvodi);
+
+            return View("IndexReadOnly");
+
+
         }
 
+        [AllowAnonymous]
         public ActionResult GetData()
         {
             List<Proizvod> proizvodi = db.Proizvodi

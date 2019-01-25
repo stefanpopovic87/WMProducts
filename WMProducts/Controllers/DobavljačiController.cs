@@ -93,6 +93,9 @@ namespace WMProducts.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Naziv,Adresa,Pib")] Dobavljač dobavljač)
         {
+            var supplierInDb = db.Dobavljači.FirstOrDefault(m => m.Id == dobavljač.Id);
+            var newSupplier = dobavljač;
+
             bool isExist = db.Dobavljači.Where(
               d => d.Pib.ToLower().Equals(dobavljač.Pib.ToLower())
           ).FirstOrDefault() != null;
@@ -102,6 +105,21 @@ namespace WMProducts.Controllers
                 return View(dobavljač);
 
             }
+            else if (supplierInDb.Naziv == newSupplier.Naziv
+                && supplierInDb.Adresa == newSupplier.Adresa
+                && supplierInDb.Pib == newSupplier.Pib)
+            {
+                return RedirectToAction("Index");
+            }
+            else if (supplierInDb.Pib == newSupplier.Pib)
+            {
+                supplierInDb.Naziv = newSupplier.Naziv;
+                supplierInDb.Adresa = newSupplier.Adresa;
+                db.SaveChanges();
+                SaveToJsonFile();
+                return RedirectToAction("Index");
+            }
+
             else if (isExist)
             {
                 ModelState.AddModelError(string.Empty, "Dobavljač sa unesenim PIB-om već postoji");

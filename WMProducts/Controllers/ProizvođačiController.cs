@@ -90,6 +90,9 @@ namespace WMProducts.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Naziv,Adresa,Pib")] Proizvođač proizvođač)
         {
+            var manufacturerInDb = db.Proizvođači.FirstOrDefault(m => m.Id == proizvođač.Id);
+            var newManufacturer = proizvođač;
+
             bool isExist = db.Proizvođači.Where(
               p => p.Pib.ToLower().Equals(proizvođač.Pib.ToLower())
           ).FirstOrDefault() != null;
@@ -97,6 +100,20 @@ namespace WMProducts.Controllers
             if (!ModelState.IsValid)
             {
                 return View(proizvođač);
+            }
+            else if (manufacturerInDb.Naziv == newManufacturer.Naziv
+                && manufacturerInDb.Adresa == newManufacturer.Adresa
+                && manufacturerInDb.Pib == newManufacturer.Pib)
+            {
+                return RedirectToAction("Index");
+            }
+            else if (manufacturerInDb.Pib == newManufacturer.Pib)
+            {
+                manufacturerInDb.Naziv = proizvođač.Naziv;
+                manufacturerInDb.Adresa = proizvođač.Adresa;
+                db.SaveChanges();
+                SaveToJsonFile();
+                return RedirectToAction("Index");
             }
             else if (isExist)
             {

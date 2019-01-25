@@ -26,15 +26,19 @@
                     <li class="brand @Html.IsSelected(actions: "Index", controllers: "Proizvodi")">
                         <a href="@Url.Action("Index", "Proizvodi")"><span>WM</span> Proizvodi</a>
                     </li>
-                    <li class="@Html.IsSelected(actions: "Index", controllers: "Kategorije")">
-                        <a href="@Url.Action("Index", "Kategorije")">Kategorije</a>
-                    </li>
-                    <li class="@Html.IsSelected(actions: "Index", controllers: "Proizvođači")">
-                        <a href="@Url.Action("Index", "Proizvođači")">Proizvođači</a>
-                    </li>
-                    <li class="@Html.IsSelected(actions: "Index", controllers: "Dobavljači")">
-                        <a href="@Url.Action("Index", "Dobavljači")">Dobavljači</a>
-                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="@Html.IsSelected(actions: "Index", controllers: "Kategorije")">
+                            <a href="@Url.Action("Index", "Kategorije")">Kategorije</a>
+                        </li>
+                        <li class="@Html.IsSelected(actions: "Index", controllers: "Proizvođači")">
+                            <a href="@Url.Action("Index", "Proizvođači")">Proizvođači</a>
+                        </li>
+                        <li class="@Html.IsSelected(actions: "Index", controllers: "Dobavljači")">
+                            <a href="@Url.Action("Index", "Dobavljači")">Dobavljači</a>
+                        </li>
+                    }
+
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

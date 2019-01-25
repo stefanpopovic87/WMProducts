@@ -93,6 +93,9 @@ namespace WMProducts.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Naziv")] Kategorija kategorija)
         {
+            var categoryInDb = db.Kategorije.FirstOrDefault(k => k.Id == kategorija.Id);
+            var newCategory = kategorija;
+
             bool isExist = db.Kategorije.Where(
                k => k.Naziv.ToLower().Equals(kategorija.Naziv.ToLower())
            ).FirstOrDefault() != null;
@@ -101,6 +104,10 @@ namespace WMProducts.Controllers
             {
                 return View(kategorija);
 
+            }
+            else if (newCategory.Naziv == categoryInDb.Naziv)
+            {
+                return RedirectToAction("Index");
             }
             else if (isExist)
             {

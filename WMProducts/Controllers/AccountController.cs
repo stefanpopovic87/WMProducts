@@ -163,7 +163,7 @@ namespace WMProducts.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Proizvodi");
                 }
                 AddErrors(result);
             }
@@ -392,7 +392,7 @@ namespace WMProducts.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Proizvodi");
         }
 
         //
@@ -449,7 +449,7 @@ namespace WMProducts.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Proizvodi");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

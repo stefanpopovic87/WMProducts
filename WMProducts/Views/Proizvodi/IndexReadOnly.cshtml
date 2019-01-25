@@ -1,0 +1,93 @@
+﻿@model IEnumerable<WMProducts.Models.Proizvod>
+
+@{
+    /**/
+
+    ViewBag.Title = "Proizvodi";
+}
+
+<h2>Proizvodi</h2>
+
+<br />
+<table id="proizvodi" class="table table-hover table-condensed">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Naziv)
+            </th>
+            <th>
+                Opis
+            </th>
+            <th>
+                Kategorija
+            </th>
+            <th>
+                Proizvođač
+            </th>
+            <th>
+                Dobavljač
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Cena)
+            </th>
+
+        </tr>
+    </thead>
+</table>
+
+<link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
+@section scripts {
+
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $("#proizvodi").DataTable(
+                {
+                    "language": {
+                        "search": "Pretraga:",
+                        "sLengthMenu": "Prikaži _MENU_ proizvoda",
+                        "info": "Prikazano _START_ do _END_ od ukupno _TOTAL_ proizvoda",
+                        "paginate": {
+                            "previous": "<< Prethodna",
+                            "next": "Sledeća >>"
+                        }
+                    },
+
+                    "ajax": {
+                        "url": "/Proizvodi/GetData",
+                        "type": "GET",
+                        "dataType": "json"
+                    },
+                    "columns": [
+                        {
+                            "data": "Naziv"
+                            
+                        },
+                        {
+                            "data": "Opis"
+
+                        },
+                        {
+                            "data": "Kategorija.Naziv"
+                        },
+                        {
+                            "data": "Proizvođač.Naziv"
+                        },
+                        {
+                            "data": "Dobavljač.Naziv"
+                        },
+                        {
+                            "data": "Cena",
+                            "render": $.fn.dataTable.render.number(',', '.', 2, '', ' RSD')
+                        }
+                        
+                    ]
+                });
+
+        });
+
+    </script>
+}
+
