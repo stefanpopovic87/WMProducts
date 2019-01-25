@@ -193,7 +193,7 @@ namespace WMProducts.Controllers
             {
                 productInDb.Opis = proizvod.Opis;
                 productInDb.Cena = proizvod.Cena;
-                productInDb.Proizvođač.Naziv = proizvođač;
+                productInDb.ProizvođačId = proizvod.ProizvođačId;
                 db.SaveChanges();
                 SaveToJsonFile();
                 return RedirectToAction("Index");
