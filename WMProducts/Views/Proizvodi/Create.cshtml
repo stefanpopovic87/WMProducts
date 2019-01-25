@@ -26,7 +26,6 @@
             @Html.LabelFor(model => model.Opis, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.TextAreaFor(model => model.Opis, 4, 40, new { @class = "form-control", placeholder = "Unesi opis..." })
-                @*@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })*@
                 @Html.ValidationMessageFor(model => model.Opis, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -35,7 +34,6 @@
             <label class="control-label col-md-2">* Kategorija </label>
             <div class="col-md-10">
                 @Html.DropDownListFor(p => p.KategorijaId, new SelectList(Model.Kategorije,"Id","Naziv"), "-- Izaberi kategoriju --", new { @class = "form-control" })
-                @*@Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control" })*@
                 @Html.ValidationMessageFor(model => model.KategorijaId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -44,7 +42,6 @@
             <label class="control-label col-md-2">* Proizvođač </label>
             <div class="col-md-10">
                 @Html.DropDownListFor(p => p.ProizvođačId, new SelectList(Model.Proizvođači, "Id", "Naziv"), "-- Izaberi proizvođača --", new { @class = "form-control" })
-                @*@Html.DropDownList("ManufacturerId", null, htmlAttributes: new { @class = "form-control" })*@
                 @Html.ValidationMessageFor(model => model.ProizvođačId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -53,7 +50,6 @@
             <label class="control-label col-md-2">* Dobavljač </label>
             <div class="col-md-10">
                 @Html.DropDownListFor(p => p.DobavljačId, new SelectList(Model.Dobavljači, "Id", "Naziv"), "-- Izaberi dobavljača --", new { @class = "form-control" })
-                @*@Html.DropDownList("SupplierId", null, htmlAttributes: new { @class = "form-control" })*@
                 @Html.ValidationMessageFor(model => model.DobavljačId, "", new { @class = "text-danger" })
             </div>
         </div>

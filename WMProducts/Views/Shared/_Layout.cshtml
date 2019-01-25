@@ -18,14 +18,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @*@Html.ActionLink("WM Proizvodi", "Index", "Proizvodi", new { area = "" }, new { @class = "navbar-brand" })*@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
 
 
                     <li class="brand @Html.IsSelected(actions: "Index", controllers: "Proizvodi")">
-                        <a href="@Url.Action("Index", "Proizvodi")">WM Proizvodi</a>
+                        <a href="@Url.Action("Index", "Proizvodi")"><span>WM</span> Proizvodi</a>
                     </li>
                     <li class="@Html.IsSelected(actions: "Index", controllers: "Kategorije")">
                         <a href="@Url.Action("Index", "Kategorije")">Kategorije</a>

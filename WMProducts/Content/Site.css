@@ -23,6 +23,10 @@ textarea {
     max-width: 280px;
 }
 
+a {
+    text-decoration: none !important;
+    font-weight: bold !important;
+}
 
 /*VALIDATION*/
 .text-danger {
@@ -34,8 +38,24 @@ textarea {
     line-height: 20px;
 }
 
+    .brand a span {
+       color: #93c54b
+    }
+
 .selected a {
     color: white !important;
     background-color: #282826;
 }
 
+.input-validation-error {
+    border: 2px solid #e04c47;
+}
+
+.validation-summary-errors ul{
+    list-style-type: none;
+}
+
+.proizvodLink {
+    font-size: 18px;
+    letter-spacing: 2px;
+}

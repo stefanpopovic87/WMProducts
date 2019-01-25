@@ -11,6 +11,7 @@
 <p>
     @Html.ActionLink("Kreiraj novi", "Create")
 </p>
+<br />
 <table id="proizvodi" class="table table-hover table-condensed">
     <thead>
         <tr>
@@ -40,35 +41,6 @@
             </th>
         </tr>
     </thead>
-    @*<tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-
-                        @Html.DisplayFor(modelItem => item.Naziv)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Kategorija.Naziv)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Proizvođač.Naziv)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Dobavljač.Naziv)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Cena) RSD
-                    </td>
-                    <td>
-                        @Html.ActionLink("Izmeni", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Informacije", "Details", new { id = item.Id }) |
-                        @Html.ActionLink("Obriši", "Delete", new { id = item.Id })
-                    </td>
-                </tr>
-            }
-        </tbody>*@
 </table>
 
 <link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -76,53 +48,63 @@
 
     <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
-
     <script>
         $(document).ready(function () {
-
             var table = $("#proizvodi").DataTable(
                 {
-                    
-                "ajax": {
-                    "url": "/Proizvodi/GetData",
-                    "type": "GET",
-                    "dataType": "json"
-                },
-                "columns": [
-                    {
-                        "data": "Naziv",
-                        "render": function (data, type, Proizvod) {
-                            return "<a href='/Proizvodi/Details/" + Proizvod.Id + "'>" + Proizvod.Naziv + "</a>";
+                    "language": {
+                        "search": "Pretraga:",
+                        "sLengthMenu": "Prikaži _MENU_ proizvoda",
+                        "info": "Prikazano _START_ do _END_ od ukupno _TOTAL_ proizvoda",
+                        "paginate": {
+                            "previous": "<< Prethodna",
+                            "next": "Sledeća >>"
                         }
                     },
-                    {
-                        "data": "Kategorija.Naziv"
+
+                    "ajax": {
+                        "url": "/Proizvodi/GetData",
+                        "type": "GET",
+                        "dataType": "json"
                     },
-                    {
-                        "data": "Proizvođač.Naziv"
-                    },
-                    {
-                        "data": "Dobavljač.Naziv"
-                    },
-                    {
-                        "data": "Cena",
-                        "render": $.fn.dataTable.render.number(',', '.', 2, '')
-                    },
-                    {
-                        "data": "Naziv",
-                        "render": function (data, type, Proizvod) {
-                            return "<a href='/Proizvodi/Edit/" + Proizvod.Id + "' + class='btn btn-sm btn-default' + >" + "Izmeni" + "</a>";
+                    "columns": [
+                        {
+                            "data": "Naziv",
+                            "render": function (data, type, Proizvod) {
+                                return "<a href='/Proizvodi/Details/" + Proizvod.Id + "'  + class='proizvodLink' + >" + Proizvod.Naziv + "</a>";
+                            }
+                        },
+                        {
+                            "data": "Kategorija.Naziv"
+                        },
+                        {
+                            "data": "Proizvođač.Naziv"
+                        },
+                        {
+                            "data": "Dobavljač.Naziv"
+                        },
+                        {
+                            "data": "Cena",
+                            "render": $.fn.dataTable.render.number(',', '.', 2, '', ' RSD')
+
+                        },
+                        {
+                            "data": "Naziv",
+                            "render": function (data, type, Proizvod) {
+                                return "<a href='/Proizvodi/Edit/" + Proizvod.Id + "' + class='btn btn-sm btn-default' + >" + "Izmeni" + "</a>";
+                            }
+                        },
+                        {
+                            "data": "Naziv",
+                            "render": function (data, type, Proizvod) {
+                                return "<a href='/Proizvodi/Delete/" + Proizvod.Id + "' + class='btn btn-sm btn-danger' + >" + "Obriši" + "</a>";
+                            }
                         }
-                    },
-                    {
-                        "data": "Naziv",
-                        "render": function (data, type, Proizvod) {
-                            return "<a href='/Proizvodi/Delete/" + Proizvod.Id + "' + class='btn btn-sm btn-danger' + >" + "Obriši" + "</a>";
-                        }
-                    }
                     ]
-                    });
-            });
+                });
+
+        });
+
     </script>
 }
 

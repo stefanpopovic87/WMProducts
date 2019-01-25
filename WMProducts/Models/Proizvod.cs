@@ -47,11 +47,5 @@ namespace WMProducts.Models
         [Display(Name = "Proizvođač")]
         [Required(ErrorMessage = "Polje je obavezno")]
         public int ProizvođačId { get; set; }
-
-        //public virtual Supplier Supplier { get; set; }
-        //public virtual Category Category { get; set; }
-        //public virtual Manufacturer Manufacturer { get; set; }
-
-        //public virtual Store Store { get; set; }
     }
 }
