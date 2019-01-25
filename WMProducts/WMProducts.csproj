@@ -262,6 +262,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\HtmlUtility.cs" />
     <Compile Include="Models\Kategorija.cs" />
     <Compile Include="Models\ConnectionTable.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -292,6 +293,7 @@
     </Content>
     <Content Include="Data\proizvodi.json" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\custom-scripts.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />

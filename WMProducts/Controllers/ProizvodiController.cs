@@ -41,42 +41,6 @@ namespace WMProducts.Controllers
             return Json(new { data = proizvodi }, JsonRequestBehavior.AllowGet);
         }
 
-        //[HttpPost]
-        //public ActionResult Upload(HttpPostedFileBase jsonFile)
-        //{
-        //    if (!jsonFile.FileName.EndsWith(".json"))
-        //    {
-        //        ViewBag.Error = "Invalid file type(Only JSON file allowed)";
-        //    }
-        //    else
-        //    {
-        //        jsonFile.SaveAs(Server.MapPath("~/FileUpload/" + Path.GetFileName(jsonFile.FileName)));
-        //        StreamReader streamReader = new StreamReader(Server.MapPath("~/FileUpload/" + Path.GetFileName(jsonFile.FileName)));
-        //        string data = streamReader.ReadToEnd();
-        //        List<Product> products = JsonConvert.DeserializeObject<List<Product>>(data);
-
-        //        products.ForEach(p =>
-        //        {
-        //            Product product = new Product()
-        //            {
-        //                Name = p.Name,
-        //                Price = p.Price,
-        //                Description = p.Description
-        //            };
-        //            db.Products.Add(product);
-        //            db.SaveChanges();
-        //        });
-        //        ViewBag.Success = "File uploaded Successfully..";
-        //    }
-        //    return View("Index");
-        //}
-
-        //public ActionResult GetAll()
-        //{
-        //    db.Configuration.ProxyCreationEnabled = false;
-        //    var productsList = db.Products.ToList<Product>();
-        //    return Json(new { data = productsList }, JsonRequestBehavior.AllowGet);
-        //}
 
         // GET: Proizvodi/Details/5
         public ActionResult Details(int? id)
@@ -96,9 +60,6 @@ namespace WMProducts.Controllers
         // GET: Proizvodi/Create
         public ActionResult Create()
         {
-            //ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
-            //ViewBag.ManufacturerId = new SelectList(db.Manufacturers, "Id", "Name");
-            //ViewBag.SupplierId = new SelectList(db.Suppliers, "Id", "Name");
             var dobavljači = db.Dobavljači.ToList();
             var proizvođači = db.Proizvođači.ToList();
             var kategorije = db.Kategorije.ToList();
@@ -115,11 +76,9 @@ namespace WMProducts.Controllers
         // POST: Proizvodi/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(/*[Bind(Include = "Id,Name,Description,Price,SupplierId,CategoryId,ManufacturerId")]*/ Proizvod proizvod)
+        public ActionResult Create(Proizvod proizvod)
         {
-            //ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", product.CategoryId);
-            //ViewBag.ManufacturerId = new SelectList(db.Manufacturers, "Id", "Name", product.ManufacturerId);
-            //ViewBag.SupplierId = new SelectList(db.Suppliers, "Id", "Name", product.SupplierId);
+
             var karegorija = db.Kategorije.Find(proizvod.KategorijaId).Naziv;
             var proizvođač = db.Proizvođači.Find(proizvod.ProizvođačId).Naziv;
             var dobavljač = db.Dobavljači.Find(proizvod.DobavljačId).Naziv;
@@ -188,17 +147,41 @@ namespace WMProducts.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Naziv,Opis,Cena,DobavljačId,KategorijaId,ProizvođačId")] Proizvod proizvod)
         {
-            if (ModelState.IsValid)
+
+            var karegorija = db.Kategorije.Find(proizvod.KategorijaId).Naziv;
+            var proizvođač = db.Proizvođači.Find(proizvod.ProizvođačId).Naziv;
+            var dobavljač = db.Dobavljači.Find(proizvod.DobavljačId).Naziv;
+            bool isExist = db.Proizvodi.Where(
+                p => p.Naziv.ToLower().Equals(proizvod.Naziv.ToLower()) &&
+                p.Kategorija.Naziv.Equals(karegorija) &&
+                p.Dobavljač.Naziv.Equals(dobavljač)
+            ).FirstOrDefault() != null;
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.KategorijaId = new SelectList(db.Kategorije, "Id", "Naziv", proizvod.KategorijaId);
+                ViewBag.ProizvođačId = new SelectList(db.Proizvođači, "Id", "Naziv", proizvod.ProizvođačId);
+                ViewBag.DobavljačId = new SelectList(db.Dobavljači, "Id", "Naziv", proizvod.DobavljačId);
+                return View(proizvod);
+            }
+
+            else if (isExist)
+            {
+                ModelState.AddModelError(string.Empty, "Proizvod već postoji");
+                ViewBag.KategorijaId = new SelectList(db.Kategorije, "Id", "Naziv", proizvod.KategorijaId);
+                ViewBag.ProizvođačId = new SelectList(db.Proizvođači, "Id", "Naziv", proizvod.ProizvođačId);
+                ViewBag.DobavljačId = new SelectList(db.Dobavljači, "Id", "Naziv", proizvod.DobavljačId);
+                return View(proizvod);
+            }
+
+            else
             {
                 db.Entry(proizvod).State = EntityState.Modified;
                 db.SaveChanges();
                 SaveToJsonFile();
                 return RedirectToAction("Index");
             }
-            ViewBag.KategorijaId = new SelectList(db.Kategorije, "Id", "Naziv", proizvod.KategorijaId);
-            ViewBag.ProizvođačId = new SelectList(db.Proizvođači, "Id", "Naziv", proizvod.ProizvođačId);
-            ViewBag.DobavljačId = new SelectList(db.Dobavljači, "Id", "Naziv", proizvod.DobavljačId);
-            return View(proizvod);
+
         }
 
         // GET: Proizvodi/Delete/5
@@ -225,7 +208,7 @@ namespace WMProducts.Controllers
             db.Proizvodi.Remove(proizvod);
             db.SaveChanges();
             SaveToJsonFile();
-            return new HttpStatusCodeResult(System.Net.HttpStatusCode.OK);
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

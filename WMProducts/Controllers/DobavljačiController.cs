@@ -48,7 +48,21 @@ namespace WMProducts.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Naziv,Adresa,Pib")] Dobavljač dobavljač)
         {
-            if (ModelState.IsValid)
+            bool isExist = db.Dobavljači.Where(
+              d => d.Pib.ToLower().Equals(dobavljač.Pib.ToLower())
+          ).FirstOrDefault() != null;
+
+            if (!ModelState.IsValid)
+            {
+                return View(dobavljač);
+
+            }
+            else if (isExist)
+            {
+                ModelState.AddModelError(string.Empty, "Dobavljač sa unesenim PIB-om već postoji");
+                return View(dobavljač);
+            }
+            else
             {
                 db.Dobavljači.Add(dobavljač);
                 db.SaveChanges();
@@ -56,7 +70,7 @@ namespace WMProducts.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(dobavljač);
+
         }
 
         // GET: Dobavljači/Edit/5
@@ -79,14 +93,28 @@ namespace WMProducts.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Naziv,Adresa,Pib")] Dobavljač dobavljač)
         {
-            if (ModelState.IsValid)
+            bool isExist = db.Dobavljači.Where(
+              d => d.Pib.ToLower().Equals(dobavljač.Pib.ToLower())
+          ).FirstOrDefault() != null;
+
+            if (!ModelState.IsValid)
+            {
+                return View(dobavljač);
+
+            }
+            else if (isExist)
+            {
+                ModelState.AddModelError(string.Empty, "Dobavljač sa unesenim PIB-om već postoji");
+                return View(dobavljač);
+            }
+            else
             {
                 db.Entry(dobavljač).State = EntityState.Modified;
                 db.SaveChanges();
                 SaveToJsonFile();
                 return RedirectToAction("Index");
             }
-            return View(dobavljač);
+
         }
 
         // GET: Dobavljači/Delete/5

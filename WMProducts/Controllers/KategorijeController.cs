@@ -48,7 +48,21 @@ namespace WMProducts.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Naziv")] Kategorija kategorija)
         {
-            if (ModelState.IsValid)
+            bool isExist = db.Kategorije.Where(
+               k => k.Naziv.ToLower().Equals(kategorija.Naziv.ToLower())
+           ).FirstOrDefault() != null;
+
+            if (!ModelState.IsValid)
+            {
+                return View(kategorija);
+
+            }
+            else if (isExist)
+            {
+                ModelState.AddModelError(string.Empty, "Kategorija već postoji");
+                return View(kategorija);
+            }
+            else
             {
                 db.Kategorije.Add(kategorija);
                 db.SaveChanges();
@@ -56,7 +70,7 @@ namespace WMProducts.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(kategorija);
+
         }
 
         // GET: Kategorije/Edit/5
@@ -79,14 +93,28 @@ namespace WMProducts.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Naziv")] Kategorija kategorija)
         {
-            if (ModelState.IsValid)
+            bool isExist = db.Kategorije.Where(
+               k => k.Naziv.ToLower().Equals(kategorija.Naziv.ToLower())
+           ).FirstOrDefault() != null;
+
+            if (!ModelState.IsValid)
+            {
+                return View(kategorija);
+
+            }
+            else if (isExist)
+            {
+                ModelState.AddModelError(string.Empty, "Kategorija već postoji");
+                return View(kategorija);
+            }
+            else
             {
                 db.Entry(kategorija).State = EntityState.Modified;
                 db.SaveChanges();
                 SaveToJsonFile();
                 return RedirectToAction("Index");
             }
-            return View(kategorija);
+
         }
 
         // GET: Kategorije/Delete/5

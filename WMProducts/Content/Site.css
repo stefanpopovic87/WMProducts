@@ -29,6 +29,13 @@ textarea {
     font-size: 10px;
     color: #e04c47;
 }
+.brand a {
+    font-size: 18px !important;
+    line-height: 20px;
+}
 
-
+.selected a {
+    color: white !important;
+    background-color: #282826;
+}
 

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using WMProducts.Models
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -17,13 +18,24 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("WM Proizvodi", "Index", "Proizvodi", new { area = "" }, new { @class = "navbar-brand" })
+                @*@Html.ActionLink("WM Proizvodi", "Index", "Proizvodi", new { area = "" }, new { @class = "navbar-brand" })*@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Kategorije", "Index", "Kategorije")</li>
-                    <li>@Html.ActionLink("Proizvođači", "Index", "Proizvođači")</li>
-                    <li>@Html.ActionLink("Dobavljači", "Index", "Dobavljači")</li>
+
+
+                    <li class="brand @Html.IsSelected(actions: "Index", controllers: "Proizvodi")">
+                        <a href="@Url.Action("Index", "Proizvodi")">WM Proizvodi</a>
+                    </li>
+                    <li class="@Html.IsSelected(actions: "Index", controllers: "Kategorije")">
+                        <a href="@Url.Action("Index", "Kategorije")">Kategorije</a>
+                    </li>
+                    <li class="@Html.IsSelected(actions: "Index", controllers: "Proizvođači")">
+                        <a href="@Url.Action("Index", "Proizvođači")">Proizvođači</a>
+                    </li>
+                    <li class="@Html.IsSelected(actions: "Index", controllers: "Dobavljači")">
+                        <a href="@Url.Action("Index", "Dobavljači")">Dobavljači</a>
+                    </li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -33,11 +45,12 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - WM Proizvodi</p>
         </footer>
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/custom-scripts")
     @RenderSection("scripts", required: false)
 </body>
 </html>

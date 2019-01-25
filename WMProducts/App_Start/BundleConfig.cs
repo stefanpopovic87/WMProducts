@@ -23,6 +23,9 @@ namespace WMProducts
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/bootbox.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/custom-scripts").Include(
+                      "~/Scripts/custom-scripts.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-sandstone.css",
                       "~/Content/site.css"));
