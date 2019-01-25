@@ -27,15 +27,18 @@ namespace WMProducts.Controllers
                 .Include(p => p.Kategorija)
                 .Include(p => p.Dobavljač)
                 .Include(p => p.Proizvođač)
-                .OrderBy(p => p.Kategorija.Naziv)
                 .ToList();
             return View(proizvodi);
         }
 
         public ActionResult GetData()
         {
-            List<Proizvod> listaProizvoda = db.Proizvodi.ToList<Proizvod>();
-            return Json(new { data = listaProizvoda }, JsonRequestBehavior.AllowGet);
+            List<Proizvod> proizvodi = db.Proizvodi
+                .Include(p => p.Kategorija)
+                .Include(p => p.Dobavljač)
+                .Include(p => p.Proizvođač)
+                .ToList<Proizvod>();
+            return Json(new { data = proizvodi }, JsonRequestBehavior.AllowGet);
         }
 
         //[HttpPost]
@@ -222,7 +225,7 @@ namespace WMProducts.Controllers
             db.Proizvodi.Remove(proizvod);
             db.SaveChanges();
             SaveToJsonFile();
-            return RedirectToAction("Index");
+            return new HttpStatusCodeResult(System.Net.HttpStatusCode.OK);
         }
 
         protected override void Dispose(bool disposing)
