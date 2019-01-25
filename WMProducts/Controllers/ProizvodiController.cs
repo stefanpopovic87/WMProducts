@@ -210,12 +210,15 @@ namespace WMProducts.Controllers
 
             else
             {
+                int newCategoryId = proizvod.KategorijaId;
+                int newManufacturetId = proizvod.ProizvođačId;
+                int newSupplierId = proizvod.DobavljačId;
                 productInDb.Naziv = proizvod.Naziv;
                 productInDb.Opis = proizvod.Opis;
                 productInDb.Cena = proizvod.Cena;
-                productInDb.Kategorija.Id = db.Proizvodi.FirstOrDefault(p => p.Id == proizvod.Id).Kategorija.Id;
-                productInDb.Proizvođač.Id = db.Proizvodi.FirstOrDefault(p => p.Id == proizvod.Id).Proizvođač.Id;
-                productInDb.Dobavljač.Id = db.Proizvodi.FirstOrDefault(p => p.Id == proizvod.Id).Dobavljač.Id;
+                productInDb.KategorijaId = newCategoryId;
+                productInDb.ProizvođačId = newManufacturetId;
+                productInDb.DobavljačId = newSupplierId;
                 db.SaveChanges();
                 SaveToJsonFile();
                 return RedirectToAction("Index");
